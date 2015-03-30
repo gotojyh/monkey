@@ -387,3 +387,42 @@ int main(int argc, char **argv)
     mk_mem_free(mk_config);
     return 0;
 }
+
+/*
+ * 143,179 变量
+ * 180,236 参数
+ * 238,243 initial
+ * 245,329 参数->内存 316,320 初始化信号
+ * 332 解析配置文件 
+ * 333 mk_sched_init->mk_event_initialize 
+ *  初始化mk_events_fdt
+ *
+ * 341 mk_clock_sequential_init ??
+ * 344,345 about plugin
+ * 353 mk_utils_register_pid 写进程文件 ??
+ * 356 mk_utils_worker_spawn 启动线程，pthread_create 函数 mk_clock_worker_init 同341 ??
+ * 359 create thread key  mk_utils_error_key
+ * 372 启动插件 plugin 
+ *+376 启动server launch workers 阻塞等待所有线程 mk_sched_launch_thread 
+ *  mk_sched_launch_thread 启动线程 多个 pthread_create 
+ *   mk_sched_launch_worker_loop 有信号处理
+ *    SIGPIPE 线程安全
+ *    mk_cache_worker_init ??
+ *     每个线程有一个sched_list_node : epoll的fd
+ *    mk_string_build ??
+ *    mk_event_channel_create 改写sched channel_r,channel_w
+ *+   mk_server_worker_loop 
+ * 385 循环loop  
+ *
+ *
+ *
+ * 数据结构
+ *  sched_list_node
+ *   
+ * 日志系统
+ * 内存管理
+ * 事件 event 机制
+ *
+ *
+ *
+ */

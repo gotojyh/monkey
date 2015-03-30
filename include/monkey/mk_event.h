@@ -68,7 +68,7 @@ struct mk_event_fd_state {
     uint32_t mask;
     void *data;
 };
-
+//file description
 typedef struct {
     int size;
     struct mk_event_fd_state *states;
