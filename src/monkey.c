@@ -403,7 +403,7 @@ int main(int argc, char **argv)
  * 356 mk_utils_worker_spawn 启动线程，pthread_create 函数 mk_clock_worker_init 同341 ??
  * 359 create thread key  mk_utils_error_key
  * 372 启动插件 plugin 
- *+376 启动server launch workers 阻塞等待所有线程 mk_sched_launch_thread 
+ *+376 mk_server_launch_workers 启动server launch workers 阻塞等待所有线程 mk_sched_launch_thread 
  *  mk_sched_launch_thread 启动线程 多个 pthread_create 
  *   mk_sched_launch_worker_loop 有信号处理
  *    SIGPIPE 线程安全
@@ -415,9 +415,20 @@ int main(int argc, char **argv)
  * 385 循环loop  
  *
  *
- *
  * 数据结构
  *  sched_list_node
+ *   loop (mk_event_loop_t) mk_event_loop_create create
+ *    fd ;//epoll_create1
+ *    data ;//mk_event_ctx_t *
+ *   signal_channel_r,_w
+ *
+ *  mk_event_fdt_t *mk_event_fdt;
+ *   size ;//大小 一般为1024
+ *   fd ;//描述符
+ *   mask ;//
+ *   data ;
+ *
+ *   
  *   
  * 日志系统
  * 内存管理
