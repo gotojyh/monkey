@@ -411,12 +411,12 @@ int main(int argc, char **argv)
  *     每个线程有一个sched_list_node : epoll的fd
  *    mk_string_build ??
  *    mk_event_channel_create 改写sched channel_r,channel_w
- *+   mk_server_worker_loop 
+ *+   mk_server_worker_loop  //线程中等待与下面的server_loop同时进行
  * 385 循环loop  
  *
  *
  * 数据结构
- *  sched_list_node
+ *  sched_list_node sched_list
  *   loop (mk_event_loop_t) mk_event_loop_create create
  *    fd ;//epoll_create1
  *    data ;//mk_event_ctx_t *
@@ -428,9 +428,19 @@ int main(int argc, char **argv)
  *   mask ;//
  *   data ;
  *
+ * mk_server_listen_entry
+ *  server_fd ;//服务器fd
+ *  address;//服务器地址
+ *  port;端口
+ *  _head;链表头
+ *
+ *
  *   
  *   
  * 日志系统
+ *  mk_info,mk_err,mk_warn 宏
+ *  mk_print 
+ *
  * 内存管理
  * 事件 event 机制
  *
