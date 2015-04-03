@@ -243,7 +243,6 @@ void mk_server_loop_balancer()
         mk_err("Failed to initialize listen sockets.");
         return;
     }
-
     /* Create an event loop context */
     evl = mk_event_loop_create(MK_EVENT_QUEUE_SIZE);
     if (!evl) {
@@ -269,7 +268,6 @@ void mk_server_loop_balancer()
                     mk_server_listen_handler(sched, &listen, fd);
 #ifdef TRACE
                     struct sched_list_node *node;
-
                     node = sched_list;
                     for (i = 0; i < mk_config->workers; i++) {
                         MK_TRACE("Worker Status");

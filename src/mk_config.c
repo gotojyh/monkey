@@ -816,7 +816,8 @@ void mk_config_set_init_values(void)
     mk_config->user_dir = NULL;
 
     /* TCP REUSEPORT: available on Linux >= 3.9 */
-    if (mk_config->kernel_features & MK_KERNEL_SO_REUSEPORT) {
+    //if (mk_config->kernel_features & MK_KERNEL_SO_REUSEPORT) {
+    if (0){
         mk_config->scheduler_mode = MK_SCHEDULER_REUSEPORT;
     }
     else {

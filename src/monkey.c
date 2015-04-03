@@ -40,6 +40,8 @@
 
 #include <getopt.h>
 
+#include <stdarg.h>
+
 #if defined(__DATE__) && defined(__TIME__)
 static const char MONKEY_BUILT[] = __DATE__ " " __TIME__;
 #else
@@ -47,6 +49,21 @@ static const char MONKEY_BUILT[] = "Unknown";
 #endif
 
 const mk_ptr_t mk_monkey_protocol = mk_ptr_init(MK_HTTP_PROTOCOL_11_STR);
+
+
+void print_log_p(int fd,char *msg)
+{
+	write(fd,msg,strlen(msg));
+}
+void print_log(int fd,char *fmt,...)
+{
+	char msg[1024]={0};
+	va_list args;
+	va_start(args,fmt);
+	vsprintf(msg,fmt,args);
+	va_end(args);
+	print_log_p(fd,msg);
+}
 
 void mk_thread_keys_init(void)
 {
@@ -176,6 +193,8 @@ int main(int argc, char **argv)
         { "allow-shared-sockets",   no_argument,        NULL, 'T' },
         { NULL, 0, NULL, 0 }
     };
+
+	//close(1);
 
     while ((opt = getopt_long(argc, argv, "bDI:Svhp:o:t:w:c:s:m:l:P:S:BT",
                               long_opts, NULL)) != -1) {
@@ -394,6 +413,9 @@ int main(int argc, char **argv)
  * 238,243 initial
  * 245,329 参数->内存 316,320 初始化信号
  * 332 解析配置文件 
+ * +mk_config_start_config
+ *
+ *
  * 333 mk_sched_init->mk_event_initialize 
  *  初始化mk_events_fdt
  *
@@ -413,6 +435,8 @@ int main(int argc, char **argv)
  *    mk_event_channel_create 改写sched channel_r,channel_w
  *+   mk_server_worker_loop  //线程中等待与下面的server_loop同时进行
  * 385 循环loop  
+ *  mk_server_loop_balancer
+ *   +mk_server_listen_handler
  *
  *
  * 数据结构
