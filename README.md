@@ -27,16 +27,13 @@ For more details please refer to the [official documentation](http://monkey-proj
 
 ## Requirements
 
-When building Monkey it needs:
-
-- CMake >= 2.8
-- Glibc >= 2.5
-- GNU C Compiler >= 3.2
-
-Monkey requires the following components on runtime:
+Monkey requires the following components:
 
 - Linux Kernel >= 2.6.32
-- Pthreads support
+- Glibc >= 2.5
+- Pthreads
+- GNU C Compiler >= 3.2
+
 
 ## Writing Scalable Web Services
 
