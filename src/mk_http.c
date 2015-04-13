@@ -72,8 +72,10 @@ void mk_http_request_init(struct mk_http_session *session,
     request->protocol = MK_HTTP_PROTOCOL_UNKNOWN;
     request->connection.len = -1;
     request->file_info.size = -1;
+    request->file_stream.fd = 0;
     request->file_stream.bytes_total = -1;
     request->file_stream.bytes_offset = 0;
+    request->file_stream.preserve = MK_FALSE;
     request->vhost_fdt_enabled = MK_FALSE;
     request->host.data = NULL;
     request->stage30_blocked = MK_FALSE;
@@ -1366,14 +1368,13 @@ int mk_http_error(int http_status, struct mk_http_session *cs,
                           -1,
                           NULL,
                           cb_stream_page_finished, NULL, NULL);
-
-            mk_channel_append_stream(&cs->channel, &sr->page_stream);
-            mk_channel_write(&cs->channel);
         }
     }
 
     /* Turn off TCP_CORK */
     mk_server_cork_flag(cs->socket, TCP_CORK_OFF);
+    mk_channel_write(&cs->channel);
+
     return EXIT_NORMAL;
 }
 
@@ -1519,7 +1520,7 @@ void mk_http_request_free(struct mk_http_request *sr)
     if (sr->vhost_fdt_enabled == MK_TRUE) {
         mk_vhost_close(sr);
     }
-    else {
+    else if(sr->file_stream.fd > 0) {
         close(sr->file_stream.fd);
     }
 
