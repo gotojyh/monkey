@@ -37,6 +37,7 @@
 int mk_file_get_info(const char *path, struct file_info *f_info, int mode)
 {
     struct stat f, target;
+	int ret;
 
     f_info->exists = MK_FALSE;
 

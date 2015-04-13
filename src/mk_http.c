@@ -1401,6 +1401,13 @@ void mk_http_session_remove(int socket)
     }
 }
 
+//二分查找
+//rb_node *head;
+//mk_http_session
+//{
+//  rb_node *ptr;
+//  ...
+//};
 struct mk_http_session *mk_http_session_get(int socket)
 {
     struct mk_http_session *cs;

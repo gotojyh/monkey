@@ -414,7 +414,6 @@ int main(int argc, char **argv)
  * 332 解析配置文件 
  * +mk_config_start_config
  *
- *
  * 333 mk_sched_init->mk_event_initialize 
  *  初始化mk_events_fdt
  *
@@ -437,13 +436,16 @@ int main(int argc, char **argv)
  *  mk_server_loop_balancer
  *   +mk_server_listen_handler
  *
- *
  * 数据结构
  *  sched_list_node sched_list
  *   loop (mk_event_loop_t) mk_event_loop_create create
  *    fd ;//epoll_create1
  *    data ;//mk_event_ctx_t *
  *   signal_channel_r,_w
+ *
+ * worker_sched_node:sched_list_node
+ * cs_list:struct rb_root 保存所有mk_http_session
+ * cs_incomplete:mk_list 保存所有
  *
  *  mk_event_fdt_t *mk_event_fdt;
  *   size ;//大小 一般为1024
@@ -456,9 +458,6 @@ int main(int argc, char **argv)
  *  address;//服务器地址
  *  port;端口
  *  _head;链表头
- *
- *
- *   
  *   
  * 日志系统
  *  mk_info,mk_err,mk_warn 宏
@@ -466,6 +465,18 @@ int main(int argc, char **argv)
  *
  * 内存管理
  * 事件 event 机制
+ *
+ * 接收收据并创建http_session,解析成功后，session中status置MK_REQUEST_STATUS_COMPLETEED,loop可写
+ * mk_conn_read :mk_connection.c//接收数据
+ *  ...
+ *  48 mk_http_session_get 获取session
+ *  49-73 处理未有连接
+ *  74 mk_http_handler_read
+ *
+ * mk_conn_write
+ *
+ * mk_http_parser:mk_http_parser.c //解析http
+ * 
  *
  *
  *

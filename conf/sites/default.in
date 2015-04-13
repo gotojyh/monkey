@@ -20,7 +20,8 @@
     # Example:
     #      DocumentRoot /home/krypton/htdocs
 
-    DocumentRoot @MK_PATH_WWW@
+    #DocumentRoot @MK_PATH_WWW@
+    DocumentRoot htdocs
 
     # Redirect:
     # ---------
