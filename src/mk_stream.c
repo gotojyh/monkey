@@ -80,7 +80,8 @@ static inline size_t channel_write_stream_file(struct mk_channel *channel,
 
 int mk_channel_write(struct mk_channel *channel)
 {
-    size_t bytes = -1;
+    //size_t bytes = -1;
+    int bytes = -1;
     struct mk_iov *iov;
     mk_ptr_t *ptr;
     struct mk_stream *stream;
@@ -100,6 +101,7 @@ int mk_channel_write(struct mk_channel *channel)
     if (channel->type == MK_CHANNEL_SOCKET) {
         if (stream->type == MK_STREAM_FILE) {
             bytes = channel_write_stream_file(channel, stream);
+			MK_TRACE("======exception file send failed %d ",bytes);
         }
         else if (stream->type == MK_STREAM_IOV) {
             MK_TRACE("[CH %i] STREAM_IOV, wrote %lu bytes",
@@ -124,7 +126,9 @@ int mk_channel_write(struct mk_channel *channel)
             }
         }
 
+		MK_TRACE("++++++exception file send failed %d",bytes);
         if (bytes > 0) {
+			MK_TRACE("++++++ bytes >0 exception file send failed %d",bytes);
             mk_stream_bytes_consumed(stream, bytes);
 
             /* notification callback, optional */
@@ -153,7 +157,9 @@ int mk_channel_write(struct mk_channel *channel)
             return MK_CHANNEL_FLUSH;
         }
         else if (bytes <= 0) {
+			MK_TRACE("++++++ bytes <=0 exception file send failed %d",bytes);
             if (stream->cb_exception) {
+				MK_TRACE("++++++exception file send failed %d",bytes);
                 stream->cb_exception(stream, errno);
             }
             return MK_CHANNEL_ERROR;
