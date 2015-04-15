@@ -443,9 +443,6 @@ int main(int argc, char **argv)
  *    data ;//mk_event_ctx_t *
  *   signal_channel_r,_w
  *
- * worker_sched_node:sched_list_node
- * cs_list:struct rb_root 保存所有mk_http_session
- * cs_incomplete:mk_list 保存所有
  *
  *  mk_event_fdt_t *mk_event_fdt;
  *   size ;//大小 一般为1024
@@ -476,8 +473,34 @@ int main(int argc, char **argv)
  * mk_conn_write
  *
  * mk_http_parser:mk_http_parser.c //解析http
- * 
  *
+ * 
+ * wsched_list_node:worker_sched_node
+ * cs_list:struct rb_root 保存所有mk_http_session
+ * cs_incomplete:mk_list 保存所有
+ *
+ * 线程：由mk_sched_launch_worker_loop调用
+ * mk_server_worker_loop  //线程中等待与下面的server_loop同时进行
+ *  全局结构 sched_list,添加一个元素
+ *  创建 sched->loop 
+ *  等待主线程通知后开始工作 mk_event_wait
+ *  channel eventfd 创建，可以传递事件
+ *  所有外连接触发的接口 mk_event_wait(evl);
+ *  处理新连接 mk_server_listen_handler
+ *  处理数据 mk_conn_read
+ *  处理写数据 mk_conn_write
+ *
+ *
+ *
+ *
+ * epoll modal
+ *
+ * mk_event_ctx_t *ctx;
+ * _mk_event_loop_create
+ * ctx->efd = epoll_create1(EPOLL_CLOEXEC);
+ * _mk_event_wait 
+ * loop->n_events = epoll_wait(ctx->efd, ctx->events, ctx->queue_size, -1);
+ *  
  *
  *
  */

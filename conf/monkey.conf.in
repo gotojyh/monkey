@@ -17,7 +17,8 @@
     # Listen 127.0.0.01:2001
     # Listen [::1]:2001
 
-    Listen @MK_CONF_LISTEN@
+    #Listen @MK_CONF_LISTEN@
+    Listen 80
 
     # Workers:
     # --------

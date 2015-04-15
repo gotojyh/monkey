@@ -456,10 +456,11 @@ int mk_utils_set_daemon()
     /* Create new session */
     setsid();
 
-    if (chdir("/") < 0) { /* make sure we can unmount the inherited filesystem */
+
+	 if (chdir("/") < 0) { /* make sure we can unmount the inherited filesystem */
         mk_err("Error: Unable to unmount the inherited filesystem in the daemon process");
         exit(EXIT_FAILURE);
-	}
+	 }
 
     /* Our last STDOUT messages */
     mk_details();
